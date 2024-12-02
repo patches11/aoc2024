@@ -1,4 +1,6 @@
 
+from codetiming import Timer
+
 def p1():
   arrays = []
   with open("input.txt", "r") as file:
@@ -43,6 +45,8 @@ def internal(arr):
 
 
 def p2():
+  timer = Timer()
+  timer.start()
   arrays = []
   with open("input.txt", "r") as file:
       for line in file:
@@ -51,10 +55,12 @@ def p2():
 
   count = 0
   for arr in arrays:
-    int_arr = [arr] + [arr[:index] + arr[index+1:] for index in range(len(arr))]
+    #int_arr = [arr] + [arr[:index] + arr[index+1:] for index in range(len(arr))]
+    int_arr = (arr[:index] + arr[index+1:] for index in range(len(arr)+1, 0, -1))
     if any([internal(arr_2) for arr_2 in int_arr]):
       count += 1
 
+  timer.stop()
   print(count)
 
 if __name__ == "__main__":
