@@ -50,7 +50,7 @@ def p1():
 def p2():
   orders = []
   updates = []
-  with open("example.txt", "r") as file:
+  with open("input.txt", "r") as file:
     for line in file:
       if "|" in line:
         orders.append(line.strip().split("|"))
@@ -67,26 +67,32 @@ def p2():
     if valid:
       valids.append(v)
 
-  invalids = [update for v, update in enumerate(udpates) if v not in valids]
+  invalids = [update for v, update in enumerate(updates) if v not in valids]
 
   corrects = []
   for v, update in enumerate(invalids):
     all_applicable_rules = [rule for rule in orders if rule[0] in update and rule[1] in update ]
 
-    correct = []
-    for a, b in all_applicable_rules:
-      if a in correct:
-        start_index = correct.index(a)
-      if b in correct:
-        end_index = correct.index(b)
-        
+    valid = False 
+    while valid == False:
+      switched = False
+      for i, item in enumerate(update):
+        gt_rules = [rule[0] for rule in orders if rule[0] in update and rule[1] == item ]
+        for ii, other in enumerate(update[i+1:]):
+          if other in gt_rules:
+            update.insert(i + ii + 2, update.pop(i))
+            switched = True
+            break
+      if not switched:
+        valid = True
+    corrects.append(update)        
 
   valids = []
-  for correct in corrects
-    valids.append(int(update[len(correct) // 2]))
+  for correct in corrects:
+    valids.append(int(correct[len(correct) // 2]))
 
   print(sum(valids)) 
 
   
 if __name__ == "__main__":
-  p1()
+  p2()
